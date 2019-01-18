@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -15,7 +15,13 @@ public class HelloWorldController {
 
     @GetMapping("/hello-world")
     @ResponseBody
-    public Greeting sayHello(@RequestParam(name="name", required=false, defaultValue="Stranger") String name) {
+    public Greeting sayHello() {
+        return new Greeting(counter.incrementAndGet(), String.format(template, "Stranger"));
+    }
+    
+    @GetMapping("/hello-world/{name}")
+    @ResponseBody
+    public Greeting sayHello(@PathVariable String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
